@@ -2,55 +2,74 @@
 This file implements the solution for the exercise https://tensorgym.com/exercises/12
 """
 import numpy as np
-import torch
 
 
 def k_means_clustering(data: np.ndarray, k: int) -> np.ndarray:
     """
     The implementation for the solution to this exercise.
     """
+    np.random.seed(0)
+
     # init
-    rand_ix = torch.randperm(data.shape[0])[0:k]
-    centroids = data[rand_ix]
+    centroids = data[np.random.choice(data.shape[0], k, replace=False)]
+    max_iter: int = 2
+    tolerance: float = 1e-4
 
-    clusters = []
+    for _ in range(max_iter):
+        old_centroids = centroids
 
-    for row in range(data.shape[0]):
-        target_ix = -1
-        min_distance = float('inf')
-        row_data = data[row]
+        # assign
+        distances = np.linalg.norm(data[:, np.newaxis] - centroids, axis=2)
+        labels = np.argmin(distances, axis=1)
+        centroids = np.vstack([data[labels == i].mean(axis=0) for i in range(k)])
 
-        for ix, c in enumerate(centroids):
-            distance = torch.norm(
-                torch.tensor(row_data, dtype=torch.float) - torch.tensor(c, dtype=torch.float),
-            ).item()
-            target_ix = ix if distance < min_distance else target_ix
-            min_distance = min(min_distance, distance)
-        
-        # assign the row to a cluster
-        if len(clusters) < (target_ix + 1):
-            clusters.append([row_data])
-        else:
-            clusters[target_ix].append(row_data)
+        # check for convergence
+        if np.all(np.abs(centroids - old_centroids) < tolerance):
+            break
+    
+    return labels.astype(int)
 
-    print(clusters)
 
 def main():
     """
     The main function for running the test cases.
     """
+    cases = []
+
+    # test case 1
     inputs = [
         [1, 2],
         [5, 5],
         [1, 5],
         [8, 8.5],
     ]
-    inputs = torch.tensor(inputs, dtype=torch.float)
     k: int = 2
-    inputs = inputs.numpy()
+    outputs = [0, 0, 0, 1]
+    cases.append({
+        'inputs': np.array(inputs, dtype=float),
+        'k': k,
+        'outputs': np.array(outputs, dtype=float),
+    })
 
-    res = k_means_clustering(inputs, k)
-    print(res)
+    # test case 2
+    inputs = [
+        [1, 1],
+        [2, 2],
+        [9, 9],
+        [8, 8],
+    ]
+    k: int = 2
+    outputs = [1, 1, 0, 0]
+    cases.append({
+        'inputs': np.array(inputs, dtype=float),
+        'k': k,
+        'outputs': np.array(outputs, dtype=float),
+    })
+
+    for ix, c in enumerate(cases):
+        res = k_means_clustering(c.get('inputs'), c.get('k'))
+        message = f'PASS: test case {ix + 1}' if np.allclose(res, c.get('outputs'), atol=1e-4) else f'FAIL: test case {ix + 1}'
+        print(message)
 
 
 if __name__ == '__main__':
