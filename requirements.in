@@ -1,0 +1,14 @@
+ipython
+torch
+pip-tools
+pylint
+flake8
+isort
+pydantic
+pandas
+numpy
+scikit-learn
+matplotlib
+pytest
+tokenizers
+transformers
