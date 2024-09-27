@@ -26,7 +26,7 @@ def k_means_clustering(data: np.ndarray, k: int) -> np.ndarray:
         # check for convergence
         if np.all(np.abs(centroids - old_centroids) < tolerance):
             break
-    
+
     return labels.astype(int)
 
 
