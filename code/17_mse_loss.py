@@ -3,6 +3,7 @@ This is the solution to the exercise https://tensorgym.com/exercises/16
 """
 import torch
 
+
 def mse_loss(inputs: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
     """
     This function implements the solution to this exercise.
