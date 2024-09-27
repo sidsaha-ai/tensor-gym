@@ -3,6 +3,7 @@ This implements the solution for the exercise https://tensorgym.com/exercises/15
 """
 import torch
 
+
 class CustomReLUFn(torch.autograd.Function):
     """
     The custom ReLU function.
