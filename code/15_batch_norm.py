@@ -21,7 +21,7 @@ def equal(x: torch.Tensor, y: torch.Tensor) -> bool:
     """
     if x.shape != y.shape:
         return False
-    
+
     for row in range(x.shape[0]):
         for col in range(x.shape[1]):
             el1 = f'{x[row, col]:.4f}'
