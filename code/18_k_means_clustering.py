@@ -1,8 +1,9 @@
 """
 This file implements the solution for the exercise https://tensorgym.com/exercises/12
 """
-import torch
 import numpy as np
+import torch
+
 
 def k_means_clustering(data: np.ndarray, k: int) -> np.ndarray:
     """
