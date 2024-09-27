@@ -11,7 +11,11 @@ def mse_loss(inputs: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
     res = torch.sum(torch.pow(inputs - targets, 2)) / inputs.numel()
     return res
 
+
 def equal(x: torch.Tensor, y: torch.Tensor) -> bool:
+    """
+    Compares the two supplied tensors.
+    """
     x_str: str = f'{x.item():.4f}'
     y_str: str = f'{y.item():.4f}'
     if x_str != y_str:
@@ -25,7 +29,7 @@ def main():
     """
     cases = []
 
-    mse_loss = torch.nn.MSELoss()
+    loss_fn = torch.nn.MSELoss()
 
     # test case 1
     inputs = [1, 2, 3]
@@ -35,7 +39,7 @@ def main():
     cases.append({
         'inputs': inputs,
         'targets': targets,
-        'outputs': mse_loss(inputs, targets),
+        'outputs': loss_fn(inputs, targets),
     })
 
     # test case 2
@@ -52,7 +56,7 @@ def main():
     cases.append({
         'inputs': inputs,
         'targets': targets,
-        'outputs': mse_loss(inputs, targets),
+        'outputs': loss_fn(inputs, targets),
     })
 
     for ix, c in enumerate(cases):
