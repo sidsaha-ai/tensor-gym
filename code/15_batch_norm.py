@@ -3,6 +3,7 @@ This is the exercise https://tensorgym.com/exercises/9
 """
 import torch
 
+
 def solution(data: torch.Tensor, epsilon: float) -> torch.Tensor:
     """
     This is the function implementation of the exercise.
