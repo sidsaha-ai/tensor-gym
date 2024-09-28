@@ -22,6 +22,7 @@ def knn_classifier(
 
     return predictions
 
+
 def main():
     """
     This method will run the test cases.
