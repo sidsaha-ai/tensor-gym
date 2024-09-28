@@ -1,9 +1,10 @@
 """
 This contains the solution to the exercise https://tensorgym.com/exercises/11.
 """
+from collections import Counter
+
 import numpy as np
 
-from collections import Counter
 
 def euclid_distance(x: np.ndarray, y: np.ndarray) -> float:
     """
