@@ -1,8 +1,6 @@
 """
 This contains the solution to the exercise https://tensorgym.com/exercises/11.
 """
-from collections import Counter
-
 import numpy as np
 
 
@@ -12,19 +10,16 @@ def knn_classifier(
     """
     This function is the implementation of this exercise.
     """
-    predictions = np.zeros(test_data.shape[0], dtype=int)  # the number of test samples to be predicted
+    test_data = test_data[:, np.newaxis, :]
 
-    for row_ix, tst_data in enumerate(test_data):
-        distances = np.sqrt(np.sum(
-            np.pow(tst_data - train_data, 2), axis=1,
-        ))
+    distances = np.sqrt(np.sum(
+        np.pow(test_data - train_data, 2), axis=-1,
+    ))
+    sorted_ix = np.argsort(distances, axis=-1)[:, 0:k]
+    labels = train_labels[sorted_ix]
+    bin_counts = np.apply_along_axis(np.bincount, axis=-1, arr=labels, minlength=np.max(train_labels))
+    predictions = np.argmax(bin_counts, axis=1)
 
-        sorted_ix = np.argsort(distances)[0:k]  # get the nearest K
-        label_freq = Counter(train_labels[ix].item() for ix in sorted_ix)
-
-        target_label = max(label_freq, key=label_freq.get)
-        predictions[row_ix] = target_label
-    
     return predictions
 
 def main():
@@ -78,7 +73,6 @@ def main():
         res = knn_classifier(
             c.get('train_data'), c.get('train_labels'), c.get('test_data'), c.get('k'),
         )
-        print(res)
         message = f'PASS: test case {ix + 1}' if (res == c.get('outputs')).all() else f'FAIL: test case {ix + 1}'
         print(message)
 
