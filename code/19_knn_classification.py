@@ -13,7 +13,7 @@ def knn_classifier(
     test_data = test_data[:, np.newaxis, :]
 
     distances = np.sqrt(np.sum(
-        np.pow(test_data - train_data, 2), axis=-1,
+        np.power(test_data - train_data, 2), axis=-1,
     ))
     sorted_ix = np.argsort(distances, axis=-1)[:, 0:k]
     labels = train_labels[sorted_ix]
